@@ -1,9 +1,8 @@
 from .unet_blocks import *
 
 class Unet(nn.Module):
-    def __init__(self, in_channels, n_classes) -> None:
+    def __init__(self, in_channels:int, n_classes:int) -> None:
         super(Unet, self).__init__()
-
         self.in_channels = in_channels
         self.n_classes = n_classes
 
@@ -22,7 +21,7 @@ class Unet(nn.Module):
 
         self.outc = OutConv(64, n_classes)
 
-    def forward(self, x):
+    def forward(self, x:torch.Tensor) -> torch.Tensor:
         x1 = self.inc(x)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
