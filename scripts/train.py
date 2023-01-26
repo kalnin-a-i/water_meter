@@ -31,4 +31,4 @@ class SegmetationModule(LightningModule):
         preds, masks = preds.squeeze(1), masks.squeeze(1)
         loss = self.criterion(preds, masks)
         self.log('val_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
-        return 
+        return loss
