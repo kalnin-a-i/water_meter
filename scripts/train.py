@@ -22,6 +22,13 @@ class SegmetationModule(LightningModule):
         preds = self.model(inputs)
         preds, masks = preds.squeeze(1), masks.squeeze(1)
         loss = self.criterion(preds, masks)
-        self.log('train_loss', loss)
+        self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         return loss
 
+    def validation_step(self, batch):
+        inputs, masks = batch
+        preds = self.model(inputs)
+        preds, masks = preds.squeeze(1), masks.squeeze(1)
+        loss = self.criterion(preds, masks)
+        self.log('val_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        return 
