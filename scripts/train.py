@@ -26,6 +26,7 @@ class SegmetationModule(LightningModule):
         return loss
 
     def validation_step(self, batch, batch_idx):
+        # get validation loss
         inputs, masks = batch
         preds = self.model(inputs)
         preds, masks = preds.squeeze(1), masks.squeeze(1)
