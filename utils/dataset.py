@@ -33,7 +33,7 @@ class WaterMeterSegDatset(Dataset):
         image, mask = read_image(image_path).float(), read_image(mask_path).float()
 
         if image.shape[1] != mask.shape[1]:
-            image = rotate(image, 270)
+            image = image.permute(0, 2, 1).flip(2)
         
         image, mask = self.image_resize(image), self.mask_resize(mask)
 
