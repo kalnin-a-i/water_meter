@@ -2,6 +2,7 @@ from torch.utils.data import Dataset
 from torchvision.io import read_image
 import os
 from torchvision.transforms import Resize
+from torchvision.transforms.functional import rotate
 
 class WaterMeterSegDatset(Dataset):
     def __init__(self, images_dir:str, masks_dir:str, transform: callable=None, input_size:tuple=(500, 500), mask_size=(504, 504)) -> None:
@@ -30,6 +31,9 @@ class WaterMeterSegDatset(Dataset):
         image_path = os.path.join(self.images_dir, self.names[index])
         mask_path = os.path.join(self.masks_dir, self.names[index])
         image, mask = read_image(image_path).float(), read_image(mask_path).float()
+
+        if image.shape[1] != mask.shape[1]:
+            image = rotate(image, 270)
         
         image, mask = self.image_resize(image), self.mask_resize(mask)
 
