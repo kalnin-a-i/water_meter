@@ -42,7 +42,7 @@ class SegmetationModule(LightningModule):
         loss = self.criterion(preds, masks)
 
         # get validation dice score 
-        dice_score = dice(preds, masks)
+        dice_score = dice(preds, masks.int())
 
         # self.log('val_dice', dice_score, on_step=False, on_epoch=False, logger=True, prog_bar=True)
         # self.log('val_loss', loss, on_step=False, on_epoch=True, prog_bar=True, logger=True)
