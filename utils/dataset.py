@@ -40,6 +40,6 @@ class WaterMeterSegDatset(Dataset):
 
         # apply transforms
         if self.transform:
-            image, mask = self.transform(image), self.transform(mask)
+            image, mask = self.transform(image, mask)
         
         return image, mask
