@@ -26,10 +26,10 @@ class SegmetationModule(LightningModule):
         preds, masks = preds.squeeze(1), masks.squeeze(1)
         loss = self.criterion(preds, masks)
         # self.log("train_loss", loss, on_step=False, on_epoch=True, prog_bar=True, logger=True)
-        return loss
+        return {'loss' : loss}
 
     def training_epoch_end(self, outputs):
-        avg_loss = torch.stack(outputs).mean()
+        avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
         self.log('epoch_train_loss', avg_loss)
 
     def validation_step(self, batch, batch_idx):
