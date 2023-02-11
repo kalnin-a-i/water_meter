@@ -3,6 +3,7 @@ from torchvision.io import read_image
 import os
 from torchvision.transforms import Resize
 from torchvision.transforms.functional import rotate
+import torch
 
 class WaterMeterSegDatset(Dataset):
     def __init__(self, images_dir:str, masks_dir:str, transform: callable=None, input_size:tuple=(500, 500), mask_size=(504, 504)) -> None:
@@ -32,6 +33,7 @@ class WaterMeterSegDatset(Dataset):
         mask_path = os.path.join(self.masks_dir, self.names[index])
         image, mask = read_image(image_path).float(), read_image(mask_path).float()
 
+        # fix dataset bug
         if image.shape[1] != mask.shape[1]:
             image = image.permute(0, 2, 1).flip(2)
         
@@ -40,6 +42,8 @@ class WaterMeterSegDatset(Dataset):
 
         # apply transforms
         if self.transform:
-            image, mask = self.transform(image, mask)
+            stack = torch.cat(image, mask, dim=0)
+            image, mask = self.transform(stack)
+            image, mask = torch.chunk(stack, dim=0)
         
         return image, mask
