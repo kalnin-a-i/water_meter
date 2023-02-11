@@ -9,8 +9,10 @@ class RandomAffine(object):
         image, mask = sample
 
         angle = random.randint(-180, 180)  
+        translate = [random.randint(30) for _ in range(2)]
+        shear = random.randint(-180, 180)
 
-        image, mask = affine(image, angle), affine(mask, angle)
+        image, mask = affine(image, angle, translate, shear), affine(mask, angle, translate, shear)
 
         return image, mask
 
