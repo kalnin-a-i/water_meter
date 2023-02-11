@@ -2,8 +2,6 @@ from torch.utils.data import Dataset
 from torchvision.io import read_image
 import os
 from torchvision.transforms import Resize
-from torchvision.transforms.functional import rotate
-import torch
 
 class WaterMeterSegDatset(Dataset):
     def __init__(self, images_dir:str, masks_dir:str, transform: callable=None, input_size:tuple=(500, 500), mask_size=(504, 504)) -> None:
@@ -40,10 +38,6 @@ class WaterMeterSegDatset(Dataset):
         image, mask = self.image_resize(image), self.mask_resize(mask)
         mask = mask / 255
 
-        # apply transforms
-        if self.transform:
-            stack = torch.cat((image, mask), dim=0)
-            image, mask = self.transform(stack)
-            image, mask = torch.chunk(stack, dim=0)
-        
+        #TODO: apply transforms
+ 
         return image, mask
