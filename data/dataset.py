@@ -42,7 +42,7 @@ class WaterMeterSegDatset(Dataset):
 
         # apply transforms
         if self.transform:
-            stack = torch.cat(image, mask, dim=0)
+            stack = torch.cat((image, mask), dim=0)
             image, mask = self.transform(stack)
             image, mask = torch.chunk(stack, dim=0)
         
