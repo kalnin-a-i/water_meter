@@ -1,0 +1,33 @@
+from torchvision.transforms.functional import affine, vflip, hflip
+import random
+
+class RandomAffine(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, sample):
+        image, mask = sample
+
+        angle = random.randint(-180, 180)  
+
+        image, mask = affine(image, angle), affine(mask, angle)
+
+        return image, mask
+
+class RandomFlip(object):
+    def __init__(self) -> None:
+        pass
+
+    def __call__(self, sample):
+        
+        image, mask = sample
+        
+        if random.randint(0, 1) == 1:
+            image, mask = vflip(image), vflip(mask)
+
+        if random.randint(0, 1):
+            image, mask = hflip(image), hflip(mask)
+
+        return image, mask
+
+

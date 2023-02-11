@@ -38,6 +38,7 @@ class WaterMeterSegDatset(Dataset):
         image, mask = self.image_resize(image), self.mask_resize(mask)
         mask = mask / 255
 
-        #TODO: apply transforms
+        if self.transform:
+            image, mask = self.transforms((image, mask))
  
         return image, mask
