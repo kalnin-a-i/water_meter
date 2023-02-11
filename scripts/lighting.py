@@ -4,15 +4,15 @@ from torch import nn
 from torchmetrics.functional import dice
 import torch 
 
-
 class SegmetationModule(LightningModule):
-    def __init__(self, model, lr:float=1e-4, **model_args) -> None:
+    def __init__(self, model, lr:float=1e-4, criterion=nn.CrossEntropyLoss, **model_args) -> None:
         super().__init__()
+        
         self.model = model(**model_args)
-        self.criterion = nn.CrossEntropyLoss()
+        self.criterion = criterion()
         self.lr = lr
 
-        self.save_hyperparameters()#ignore=['criterion', 'model'])
+        self.save_hyperparameters()
 
     def forward(self, x):
         return self.model(x)
