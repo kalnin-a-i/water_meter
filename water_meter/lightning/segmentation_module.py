@@ -29,7 +29,7 @@ class SegmetationModule(LightningModule):
         # calc loss 
         loss = self.criterion(preds, masks)
         
-        return {'loss' : loss}
+        return {'preds': preds, 'loss' : loss}
 
     def training_epoch_end(self, outputs):
         avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
@@ -47,7 +47,7 @@ class SegmetationModule(LightningModule):
         # get validation dice score 
         dice_score = dice(preds, masks.int())
 
-        return {'loss' : loss, 'dice_score': dice_score}
+        return {'preds': preds, 'loss' : loss, 'dice_score': dice_score}
 
     def validation_epoch_end(self, outputs):
         avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
