@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "water-meter"
+version = "0.1.0"
+description = ""
+authors = ["Alexey Kalinin <kalinin.ai@phystech.edu>"]
+readme = "README.md"
+packages = [{include = "water_meter"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.24.2"
+torch = [
+  {url = "https://download.pytorch.org/whl/cu117/torch-1.13.0%2Bcu117-cp310-cp310-win_amd64.whl", markers = "sys_platform == 'win32'"}
+]
+torchvision = [
+  {url = "https://download.pytorch.org/whl/cu117/torchvision-0.14.0%2Bcu117-cp310-cp310-win_amd64.whl", markers = "sys_platform == 'win32'"}
+]
+pytorch-lightning = "^1.9.2"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.21.2"
+matplotlib = "^3.7.0"
+wandb = "^0.13.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

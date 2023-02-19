@@ -5,12 +5,21 @@ from torchmetrics.functional import dice
 import torch 
 
 class SegmetationModule(LightningModule):
-    def __init__(self, model, lr:float=1e-4, criterion=nn.CrossEntropyLoss, **model_args) -> None:
+    def __init__(self,
+                 model,
+                 criterion=nn.CrossEntropyLoss(), 
+                 model_args={}, 
+                 optimizer_args={},) -> None:
         super().__init__()
         
+        # inititalize model
         self.model = model(**model_args)
-        self.criterion = criterion()
-        self.lr = lr
+
+        #initialize criterion
+        self.criterion = criterion
+
+        #initialoze optimizer args
+        self.optimizer_args = optimizer_args
 
         self.save_hyperparameters()
 
@@ -18,7 +27,7 @@ class SegmetationModule(LightningModule):
         return self.model(x)
 
     def configure_optimizers(self):
-        return Adam(self.model.parameters(), lr=self.lr)
+        return Adam(self.model.parameters(), **self.optimizer_args)
 
     def training_step(self, batch, batch_idx):
         # get preds and 

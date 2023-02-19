@@ -23,7 +23,7 @@ class WaterMeterSegDatset(Dataset):
         self.image_resize = Resize(input_size)
         self.mask_resize = Resize(mask_size)
     def __len__(self):
-        return  10#len(self.names)
+        return  len(self.names)
 
     def __getitem__(self, index: int):
         # read images
