@@ -1,5 +1,6 @@
 from .unet_blocks import *
 
+
 class Unet(nn.Module):
     def __init__(self, in_channels:int, n_classes:int) -> None:
         super(Unet, self).__init__()

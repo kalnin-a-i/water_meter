@@ -1,6 +1,7 @@
 import torch
-import torch.nn as nn 
+import torch.nn as nn
 import torch.nn.functional as F
+
 
 class DoubleConv(nn.Module):
     def __init__(self, in_channels:int, out_channels:int, mid_channels:int=None) -> None:
@@ -15,7 +16,7 @@ class DoubleConv(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(mid_channels, out_channels, kernel_size=3, padding=1, bias=False)
         )
-    
+
     def forward(self, x:torch.Tensor) -> torch.Tensor:
         return self.double_conv(x)
 

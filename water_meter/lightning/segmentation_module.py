@@ -1,17 +1,18 @@
-from torch.optim import Adam
+import torch
 from pytorch_lightning import LightningModule
 from torch import nn
+from torch.optim import Adam
 from torchmetrics.functional import dice
-import torch 
+
 
 class SegmetationModule(LightningModule):
     def __init__(self,
                  model,
-                 criterion=nn.CrossEntropyLoss(), 
-                 model_args={}, 
+                 criterion=nn.CrossEntropyLoss(),
+                 model_args={},
                  optimizer_args={},) -> None:
         super().__init__()
-        
+
         # inititalize model
         self.model = model(**model_args)
 
@@ -30,14 +31,14 @@ class SegmetationModule(LightningModule):
         return Adam(self.model.parameters(), **self.optimizer_args)
 
     def training_step(self, batch, batch_idx):
-        # get preds and 
+        # get preds and
         inputs, masks = batch
         preds = self.model(inputs)
         preds, masks = preds.squeeze(1), masks.squeeze(1)
 
-        # calc loss 
+        # calc loss
         loss = self.criterion(preds, masks)
-        
+
         return {'preds': preds, 'loss' : loss}
 
     def training_epoch_end(self, outputs):
@@ -45,15 +46,15 @@ class SegmetationModule(LightningModule):
         self.log('epoch_train_loss', avg_loss)
 
     def validation_step(self, batch, batch_idx):
-        # get preds 
+        # get preds
         inputs, masks = batch
         preds = self.model(inputs)
         preds, masks = preds.squeeze(1), masks.squeeze(1)
-        
+
         # get validation loss
         loss = self.criterion(preds, masks)
 
-        # get validation dice score 
+        # get validation dice score
         dice_score = dice(preds, masks.int())
 
         return {'preds': preds, 'loss' : loss, 'dice_score': dice_score}
@@ -64,7 +65,3 @@ class SegmetationModule(LightningModule):
 
         self.log('epoch_val_loss', avg_loss)
         self.log('epoch_val_dice', avg_dice)
-
-
-
-        
