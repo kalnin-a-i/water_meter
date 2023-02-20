@@ -21,6 +21,7 @@ pytorch-lightning = "^1.9.2"
 ipykernel = "^6.21.2"
 matplotlib = "^3.7.0"
 wandb = "^0.13.10"
+pre-commit = "^3.0.4"
 
 [build-system]
 requires = ["poetry-core"]
