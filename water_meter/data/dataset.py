@@ -3,16 +3,24 @@ from torchvision.io import read_image
 import os
 from torchvision.transforms import Resize
 
+
 class WaterMeterSegDatset(Dataset):
-    def __init__(self, images_dir:str, masks_dir:str, transform: callable=None, input_size:tuple=(500, 500), mask_size=(504, 504)) -> None:
-        '''
+    def __init__(
+        self,
+        images_dir: str,
+        masks_dir: str,
+        transform: callable = None,
+        input_size: tuple = (500, 500),
+        mask_size=(504, 504),
+    ) -> None:
+        """
         Initialize WaterMeterSeqDataset
 
         Params:
             images_dir(str): path to images
             masks_dir(str): path to masks
             trasnsform(callable, optional): transform for source and mask
-        '''
+        """
         super().__init__()
         self.names = sorted(os.listdir(images_dir))
 
@@ -22,8 +30,9 @@ class WaterMeterSegDatset(Dataset):
 
         self.image_resize = Resize(input_size)
         self.mask_resize = Resize(mask_size)
+
     def __len__(self):
-        return  len(self.names)
+        return len(self.names)
 
     def __getitem__(self, index: int):
         # read images
@@ -34,11 +43,11 @@ class WaterMeterSegDatset(Dataset):
         # fix dataset bug
         if image.shape[1] != mask.shape[1]:
             image = image.permute(0, 2, 1).flip(2)
-        
+
         image, mask = self.image_resize(image), self.mask_resize(mask)
         mask = mask / 255
 
         if self.transform:
             image, mask = self.transform((image, mask))
- 
+
         return image, mask
